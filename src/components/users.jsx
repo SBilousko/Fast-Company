@@ -53,7 +53,7 @@ const Users = () => {
   };
 
   const renderTR = () => {
-    return users.map((user) => {
+    return usersList.map((user) => {
       return <tr key={user._id}>{renderTD(user)}</tr>;
     });
   };
@@ -72,12 +72,10 @@ const Users = () => {
   const formatCount = () => {
     let peopleCounter = "";
     const people = "с тобой сегодня";
-    if (count >= 5 && count <= 12) {
+    if ((count >= 5 && count <= 12) || count === 1) {
       peopleCounter = `${count} человек тусанет ${people}`;
     } else if (count >= 2 && count <= 4) {
       peopleCounter = `${count} человека тусанут ${people}`;
-    } else if (count === 1) {
-      peopleCounter = `${count} человек тусанет ${people}`;
     } else if (count === 0) {
       peopleCounter = "Никто с тобой не тусанет";
     }
