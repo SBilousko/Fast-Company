@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import api from "../api";
 import User from "./user";
 import SearchStatus from "./searchStatus";
+import Pagination from "./pagination";
 
 const Users = () => {
   const users = api.users.fetchAll();
@@ -40,6 +41,7 @@ const Users = () => {
   const initialState = users;
   const [count, setCount] = useState(users.length);
   const [usersList, setUsers] = useState(initialState);
+  const pageSize = 4;
 
   const handleDelete = (id) => {
     setCount((prevState) => prevState - 1);
@@ -58,22 +60,33 @@ const Users = () => {
     setUsers(newUsers);
   };
 
+  const handlePageChange = (pageIndex) => {
+    console.log("page:", pageIndex);
+  };
+
   const renderTable = () => {
-    if (usersList.length === 0) return "";
+    if (count === 0) return "";
     return (
-      <table className="table">
-        {renderTHead()}
-        <tbody>
-          {usersList.map((user) => (
-            <User
-              {...user}
-              key={user._id}
-              onDelete={handleDelete}
-              onFavourite={handleFavourite}
-            />
-          ))}
-        </tbody>
-      </table>
+      <>
+        <table className="table">
+          {renderTHead()}
+          <tbody>
+            {usersList.map((user) => (
+              <User
+                {...user}
+                key={user._id}
+                onDelete={handleDelete}
+                onFavourite={handleFavourite}
+              />
+            ))}
+          </tbody>
+        </table>
+        <Pagination
+          itemCount={count}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+        />
+      </>
     );
   };
 
