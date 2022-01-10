@@ -3,6 +3,7 @@ import api from "../api";
 import User from "./user";
 import SearchStatus from "./searchStatus";
 import Pagination from "./pagination";
+import { paginate } from "../utils/paginate";
 
 const Users = () => {
   const users = api.users.fetchAll();
@@ -42,6 +43,7 @@ const Users = () => {
   const [count, setCount] = useState(users.length);
   const [usersList, setUsers] = useState(initialState);
   const pageSize = 4;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleDelete = (id) => {
     setCount((prevState) => prevState - 1);
@@ -62,7 +64,10 @@ const Users = () => {
 
   const handlePageChange = (pageIndex) => {
     console.log("page:", pageIndex);
+    setCurrentPage(pageIndex);
   };
+
+  const userCrop = paginate(users, currentPage, pageSize);
 
   const renderTable = () => {
     if (count === 0) return "";
@@ -71,7 +76,7 @@ const Users = () => {
         <table className="table">
           {renderTHead()}
           <tbody>
-            {usersList.map((user) => (
+            {userCrop.map((user) => (
               <User
                 {...user}
                 key={user._id}
@@ -82,8 +87,9 @@ const Users = () => {
           </tbody>
         </table>
         <Pagination
-          itemCount={count}
+          itemsCount={count}
           pageSize={pageSize}
+          currentPage={currentPage}
           onPageChange={handlePageChange}
         />
       </>
