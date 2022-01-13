@@ -55,7 +55,7 @@ const Users = () => {
     console.log("Favourite ", id);
     const newUsers = usersList.map((user) => {
       if (user._id === id) {
-        user.bookmark = user.bookmark ? false : true;
+        user.bookmark = !user.bookmark;
       }
       return user;
     });
@@ -67,7 +67,7 @@ const Users = () => {
     setCurrentPage(pageIndex);
   };
 
-  const userCrop = paginate(users, currentPage, pageSize);
+  const userCrop = paginate(usersList, currentPage, pageSize);
 
   const renderTable = () => {
     if (count === 0) return "";

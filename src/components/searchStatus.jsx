@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const SearchStatus = (props) => {
   const { count } = props;
@@ -13,6 +14,11 @@ const SearchStatus = (props) => {
       {props.formatCount()}
     </span>
   );
+};
+
+SearchStatus.propTypes = {
+  count: PropTypes.number.isRequired,
+  formatCount: PropTypes.func.isRequired
 };
 
 export default SearchStatus;
