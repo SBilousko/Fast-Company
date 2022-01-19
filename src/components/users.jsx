@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../api";
 import User from "./user";
 import SearchStatus from "./searchStatus";
 import Pagination from "./pagination";
 import { paginate } from "../utils/paginate";
+import GroupList from "./groupList";
 
 const Users = () => {
   const users = api.users.fetchAll();
@@ -27,8 +28,8 @@ const Users = () => {
         <thead>
           <tr>
             <th scope="col">Имя</th>
-            <th scope="col">Качества</th>
             <th scope="col">Профессия</th>
+            <th scope="col">Качества</th>
             <th scope="col">Встретился, раз</th>
             <th scope="col">Оценка</th>
             <th scope="col">Избранное</th>
@@ -44,6 +45,11 @@ const Users = () => {
   const [usersList, setUsers] = useState(initialState);
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
+  const [professions, setProfessions] = useState();
+
+  useEffect(() => {
+    api.professions.fetchAll().then((data) => setProfessions(data));
+  }, []);
 
   const handleDelete = (id) => {
     setCount((prevState) => prevState - 1);
@@ -68,6 +74,10 @@ const Users = () => {
   };
 
   const userCrop = paginate(usersList, currentPage, pageSize);
+
+  const handleProfessionSelect = (params) => {
+    console.log(professions);
+  };
 
   const renderTable = () => {
     if (count === 0) return "";
@@ -101,6 +111,9 @@ const Users = () => {
       <h2>
         <SearchStatus formatCount={formatCount} count={count} />
       </h2>
+      {professions && (
+        <GroupList items={professions} onItemSelect={handleProfessionSelect} />
+      )}
       {renderTable()}
     </>
   );

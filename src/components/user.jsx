@@ -36,7 +36,7 @@ const User = (props) => {
 
 User.propTypes = {
   name: PropTypes.string.isRequired,
-  profession: PropTypes.string.isRequired,
+  profession: PropTypes.object.isRequired,
   completedMeetings: PropTypes.number.isRequired,
   qualities: PropTypes.array.isRequired,
   rate: PropTypes.number.isRequired,
