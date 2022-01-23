@@ -41,24 +41,26 @@ const Users = () => {
   };
 
   const initialState = users;
-  const [count, setCount] = useState(users.length);
   const [usersList, setUsers] = useState(initialState);
-  const pageSize = 4;
+  const pageSize = 2;
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
+  const [selectedProf, setselectedProf] = useState();
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => setProfessions(data));
   }, []);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedProf]);
 
   const handleDelete = (id) => {
-    setCount((prevState) => prevState - 1);
+    // setCount((prevState) => prevState - 1);
     const newUsers = usersList.filter((user) => user._id !== id);
     setUsers(newUsers);
   };
 
   const handleFavourite = (id) => {
-    console.log("Favourite ", id);
     const newUsers = usersList.map((user) => {
       if (user._id === id) {
         user.bookmark = !user.bookmark;
@@ -69,20 +71,29 @@ const Users = () => {
   };
 
   const handlePageChange = (pageIndex) => {
-    console.log("page:", pageIndex);
     setCurrentPage(pageIndex);
   };
 
-  const userCrop = paginate(usersList, currentPage, pageSize);
+  const filteredUsers = selectedProf
+    ? usersList.filter((user) => user.profession === selectedProf)
+    : usersList;
 
-  const handleProfessionSelect = (params) => {
-    console.log(professions);
+  // const [count, setCount] = useState(filteredUsers.length);
+  const count = filteredUsers.length;
+
+  const userCrop = paginate(filteredUsers, currentPage, pageSize);
+
+  const handleProfessionSelect = (item) => {
+    setselectedProf(item);
   };
 
   const renderTable = () => {
     if (count === 0) return "";
     return (
-      <>
+      <div className="d-flex flex-column">
+        <h2>
+          <SearchStatus formatCount={formatCount} length={count} />
+        </h2>
         <table className="table">
           {renderTHead()}
           <tbody>
@@ -96,26 +107,38 @@ const Users = () => {
             ))}
           </tbody>
         </table>
-        <Pagination
-          itemsCount={count}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      </>
+        <div className="d-flex justify-content-center">
+          <Pagination
+            itemsCount={count}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      </div>
     );
   };
 
+  const clearFilter = () => {
+    setselectedProf();
+  };
+
   return (
-    <>
-      <h2>
-        <SearchStatus formatCount={formatCount} count={count} />
-      </h2>
+    <div className="d-flex">
       {professions && (
-        <GroupList items={professions} onItemSelect={handleProfessionSelect} />
+        <div className="d-flex flex-column flex-shrink-0 p-3">
+          <GroupList
+            items={professions}
+            onItemSelect={handleProfessionSelect}
+            selectedItem={selectedProf}
+          />
+          <button className="btn btn-secondary mt-2" onClick={clearFilter}>
+            Очистить
+          </button>
+        </div>
       )}
       {renderTable()}
-    </>
+    </div>
   );
 };
 
