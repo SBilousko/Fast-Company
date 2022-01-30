@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SearchStatus = (props) => {
-  const { count } = props;
+const SearchStatus = ({ length }) => {
+  const count = length;
   const badgeClasses = "badge m-2 bg-";
 
   const formatCount = (count) => {
@@ -19,18 +19,22 @@ const SearchStatus = (props) => {
   };
 
   return (
-    <span
-      className={
-        count === 0 ? badgeClasses + "warning" : badgeClasses + "primary"
-      }
-    >
-      {formatCount()}
-    </span>
+    <>
+      <h2>
+        <span
+          className={
+            count === 0 ? badgeClasses + "warning" : badgeClasses + "primary"
+          }
+        >
+          {formatCount(count)}
+        </span>
+      </h2>
+    </>
   );
 };
 
 SearchStatus.propTypes = {
-  count: PropTypes.number.isRequired
+  length: PropTypes.number.isRequired
 };
 
 export default SearchStatus;
