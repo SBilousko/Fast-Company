@@ -9,9 +9,21 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         order: selectedSort.order === "asc" ? "desc" : "asc"
       });
     } else {
-      onSort({ path: item, order: "asc" });
+      onSort({ path: item, order: "asc", className: "" });
     }
   };
+
+  const handleArrow = (selectedSort, path) => {
+    if (selectedSort.path === path) {
+      if (selectedSort.order === "asc") {
+        return <i className="bi bi-caret-down-fill"></i>;
+      } else {
+        return <i className="bi bi-caret-up-fill"></i>;
+      }
+    }
+    return null;
+  };
+
   return (
     <thead>
       <tr>
@@ -26,6 +38,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
             scope="col"
           >
             {columns[column].name}
+            {handleArrow(selectedSort, columns[column].path)}
           </th>
         ))}
         {/* <th onClick={() => handleSort("name")} scope="col">
@@ -52,7 +65,6 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
 
 TableHeader.propTypes = {
   onSort: PropTypes.func.isRequired,
-  handleSort: PropTypes.func.isRequired,
   selectedSort: PropTypes.object.isRequired,
   columns: PropTypes.object.isRequired
 };

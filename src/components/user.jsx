@@ -3,29 +3,39 @@ import Bookmark from "./bookmark";
 import PropTypes from "prop-types";
 import Qualitie from "./qualitie";
 
-const User = (props) => {
+const User = ({
+  _id,
+  name,
+  qualities,
+  profession,
+  completedMeetings,
+  rate,
+  onDelete,
+  bookmark,
+  onFavourite
+}) => {
   return (
     <tr>
-      <td>{props.name}</td>
+      <td>{name}</td>
       <td>
-        {props.qualities.map((qualitie) => (
+        {qualities.map((qualitie) => (
           <Qualitie {...qualitie} key={qualitie._id} />
         ))}
       </td>
-      <td>{props.profession.name}</td>
-      <td>{props.completedMeetings}</td>
-      <td>{props.rate}</td>
+      <td>{profession.name}</td>
+      <td>{completedMeetings}</td>
+      <td>{rate}</td>
       <td>
         <Bookmark
-          id={props._id}
-          bookmark={props.bookmark}
-          onFavourite={props.onFavourite}
+          id={_id}
+          bookmark={bookmark}
+          onClick={() => onFavourite(_id)}
         />
       </td>
       <td>
         <button
           className="btn btn-danger"
-          onClick={() => props.onDelete(props._id)}
+          onClick={() => onDelete(_id)}
         >
           Delete
         </button>

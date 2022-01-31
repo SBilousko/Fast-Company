@@ -16,7 +16,7 @@ const UsersTable = ({ users, onDelete, onFavourite, selectedSort, onSort }) => {
       name: "Избранное",
       component: (user) => (
         <Bookmark
-          status={user.bookmark}
+          bookmark={user.bookmark}
           onClick={() => onFavourite(user._id)}
         />
       )
@@ -46,9 +46,7 @@ UsersTable.propTypes = {
   users: PropTypes.array.isRequired,
   onDelete: PropTypes.func.isRequired,
   onFavourite: PropTypes.func.isRequired,
-  handleSort: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
-  // onToggleBookmark: PropTypes.func.isRequired,
   selectedSort: PropTypes.object.isRequired
 };
 
