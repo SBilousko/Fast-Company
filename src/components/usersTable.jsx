@@ -3,11 +3,16 @@ import PropTypes from "prop-types";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 import Bookmark from "./bookmark";
+import QualitiesList from "./qualitiesList";
+import Table from "./table";
 
 const UsersTable = ({ users, onDelete, onFavourite, selectedSort, onSort }) => {
   const columns = {
     name: { path: "name", name: "Имя" },
-    qualities: { name: "Качества" },
+    qualities: {
+      name: "Качества",
+      component: (user) => <QualitiesList qualities={user.qualities} />
+    },
     profession: { path: "profession.name", name: "Профессия" },
     completedMeetings: { path: "completedMeetings", name: "Встретился, раз" },
     rate: { path: "rate", name: "Оценка" },
@@ -23,22 +28,22 @@ const UsersTable = ({ users, onDelete, onFavourite, selectedSort, onSort }) => {
     },
     delete: {
       component: (user) => (
-        <button
-          className="btn btn-danger"
-          onClick={() => onDelete(user._id)}
-        >
+        <button className="btn btn-danger" onClick={() => onDelete(user._id)}>
           Delete
         </button>
       )
     }
   };
   return (
-    <>
-      <table className="table">
-        <TableHeader {...{ onSort, selectedSort, columns }} />
-        <TableBody {...{ columns, data: users }} />
-      </table>
-    </>
+    <Table
+      onSort={onSort}
+      selectedSort={selectedSort}
+      columns={columns}
+      data={users}
+    >
+      <TableHeader {...{ onSort, selectedSort, columns }} />
+      <TableBody {...{ columns, data: users }} />
+    </Table>
   );
 };
 
