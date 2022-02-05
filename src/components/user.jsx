@@ -1,59 +1,40 @@
 import React from "react";
-import Bookmark from "./bookmark";
 import PropTypes from "prop-types";
-import Qualitie from "./qualitie";
+import { useHistory } from "react-router-dom";
+// import api from "../api";
 
-const User = ({
-  _id,
-  name,
-  qualities,
-  profession,
-  completedMeetings,
-  rate,
-  onDelete,
-  bookmark,
-  onFavourite
-}) => {
+const User = ({ user }) => {
+  const history = useHistory();
+  const handleAllUsers = () => {
+    history.replace("/users");
+  };
+  // const user = api.users.getById(id).then((data) => {
+  //   console.log("data", data.name);
+  //   return data.name;
+  // });
+
+  // console.log("user", user);
+
   return (
-    <tr>
-      <td>{name}</td>
-      <td>
-        {qualities.map((qualitie) => (
-          <Qualitie {...qualitie} key={qualitie._id} />
-        ))}
-      </td>
-      <td>{profession.name}</td>
-      <td>{completedMeetings}</td>
-      <td>{rate}</td>
-      <td>
-        <Bookmark
-          id={_id}
-          bookmark={bookmark}
-          onClick={() => onFavourite(_id)}
-        />
-      </td>
-      <td>
+    <>
+      <h3>{`User ${user._id} Page`}</h3>
+      <div>User Name: {user.name}</div>
+      <div>
         <button
-          className="btn btn-danger"
-          onClick={() => onDelete(_id)}
+          className="btn btn-primary"
+          onClick={() => {
+            handleAllUsers();
+          }}
         >
-          Delete
+          Все пользователи
         </button>
-      </td>
-    </tr>
+      </div>
+    </>
   );
 };
 
 User.propTypes = {
-  name: PropTypes.string.isRequired,
-  profession: PropTypes.object.isRequired,
-  completedMeetings: PropTypes.number.isRequired,
-  qualities: PropTypes.array.isRequired,
-  rate: PropTypes.number.isRequired,
-  _id: PropTypes.string.isRequired,
-  bookmark: PropTypes.bool.isRequired,
-  onFavourite: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  user: PropTypes.object.isRequired
 };
 
 export default User;

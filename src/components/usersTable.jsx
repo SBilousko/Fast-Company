@@ -5,10 +5,15 @@ import TableBody from "./tableBody";
 import Bookmark from "./bookmark";
 import QualitiesList from "./qualitiesList";
 import Table from "./table";
+import UserLink from "./userLink";
+// import User from "./user";
 
 const UsersTable = ({ users, onDelete, onFavourite, selectedSort, onSort }) => {
   const columns = {
-    name: { path: "name", name: "Имя" },
+    name: {
+      path: "name",
+      component: (user) => <UserLink id={user._id} linkLabel={user.name} />
+    },
     qualities: {
       name: "Качества",
       component: (user) => <QualitiesList qualities={user.qualities} />

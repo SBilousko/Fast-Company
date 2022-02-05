@@ -1,13 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Users from "./components/users";
+// import Users from "./layout/users";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import "bootstrap/dist/css/bootstrap.css";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Users />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
