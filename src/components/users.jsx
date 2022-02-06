@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import SearchStatus from "../components/searchStatus";
-import Pagination from "../components/pagination";
+import SearchStatus from "./searchStatus";
+import Pagination from "./pagination";
 import { paginate } from "../utils/paginate";
-import GroupList from "../components/groupList";
-import UsersTable from "../components/usersTable";
+import GroupList from "./groupList";
+import UsersTable from "./usersTable";
 import _ from "lodash";
-import { useParams } from "react-router-dom";
-import User from "../components/user";
 
 const Users = () => {
   // const initialState = users;
@@ -71,9 +69,6 @@ const Users = () => {
     const count = filteredUsers.length;
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const userCrop = paginate(sortedUsers, currentPage, pageSize);
-    const params = useParams();
-    const { userId } = params;
-    console.log(userId);
 
     const renderTable = () => {
       if (count === 0) return "";
@@ -105,30 +100,23 @@ const Users = () => {
       setSelectedProf();
     };
 
-    if (userId) {
-      api.users.getById(userId).then((data) => {
-        console.log("data", data);
-        return (<User user={data} />);
-      });
-    } else {
-      return (
-        <div className="d-flex">
-          {professions && (
-            <div className="d-flex flex-column flex-shrink-0 p-3">
-              <GroupList
-                items={professions}
-                onItemSelect={handleProfessionSelect}
-                selectedItem={selectedProf}
-              />
-              <button className="btn btn-secondary mt-2" onClick={clearFilter}>
-                Очистить
-              </button>
-            </div>
-          )}
-          {renderTable()}
-        </div>
-      );
-    }
+    return (
+      <div className="d-flex">
+        {professions && (
+          <div className="d-flex flex-column flex-shrink-0 p-3">
+            <GroupList
+              items={professions}
+              onItemSelect={handleProfessionSelect}
+              selectedItem={selectedProf}
+            />
+            <button className="btn btn-secondary mt-2" onClick={clearFilter}>
+              Очистить
+            </button>
+          </div>
+        )}
+        {renderTable()}
+      </div>
+    );
   }
   return "Загрузка...";
 };
