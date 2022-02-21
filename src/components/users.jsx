@@ -6,15 +6,17 @@ import { paginate } from "../utils/paginate";
 import GroupList from "./groupList";
 import UsersTable from "./usersTable";
 import _ from "lodash";
+import TextField from "./textField";
 
 const Users = () => {
-  // const initialState = users;
   const [users, setUsers] = useState();
   const pageSize = 8;
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
   const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
+  // const [searchString, setSearchString] = useState();
+  const [findedUsers, setFindedUsers] = useState();
 
   // const users = api.users.fetchAll();
   useEffect(() => {
@@ -26,6 +28,15 @@ const Users = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedProf]);
+
+  const clearFilter = () => {
+    setSelectedProf();
+  };
+
+  const clearSearchString = () => {
+    const searchField = document.querySelector("#search");
+    searchField.value = "";
+  };
 
   const handleDelete = (id) => {
     // setCount((prevState) => prevState - 1);
@@ -54,6 +65,8 @@ const Users = () => {
   };
 
   const handleProfessionSelect = (item) => {
+    setFindedUsers();
+    clearSearchString();
     setSelectedProf(item);
   };
 
@@ -65,16 +78,27 @@ const Users = () => {
       )
       : users;
 
+    const handleChange = ({ target }) => {
+      clearFilter();
+      // setSearchString(target.value);
+      const searchString = target.value;
+      const searchResult = users.filter(
+        (user) => user.name.toLowerCase().indexOf(searchString) + 1
+      );
+      setFindedUsers(searchResult);
+    };
+
     // const [count, setCount] = useState(filteredUsers.length);
-    const count = filteredUsers.length;
-    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
+    const sortedUsers = findedUsers || _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const userCrop = paginate(sortedUsers, currentPage, pageSize);
+    const count = sortedUsers.length;
 
     const renderTable = () => {
-      if (count === 0) return "";
+      // if (count === 0) return "";
       return (
         <div className="d-flex flex-column">
           <SearchStatus length={count} />
+          <TextField placeholder="Search..." onChange={handleChange} name="search" />
           {count > 0 && (
             <UsersTable
               users={userCrop}
@@ -94,10 +118,6 @@ const Users = () => {
           </div>
         </div>
       );
-    };
-
-    const clearFilter = () => {
-      setSelectedProf();
     };
 
     return (
