@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TableHeader from "./tableHeader";
-import TableBody from "./tableBody";
-import Bookmark from "./bookmark";
-import QualitiesList from "./qualitiesList";
-import Table from "./table";
-import UserLink from "./userLink";
+import Bookmark from "../common/bookmark";
+import Qualities from "./qualities";
+import Table, { TableHeader, TableBody } from "../common/table";
+import UserLink from "../common/page/userLink";
 // import User from "./user";
 
 const UsersTable = ({ users, onDelete, onFavourite, selectedSort, onSort }) => {
@@ -16,7 +14,7 @@ const UsersTable = ({ users, onDelete, onFavourite, selectedSort, onSort }) => {
     },
     qualities: {
       name: "Качества",
-      component: (user) => <QualitiesList qualities={user.qualities} />
+      component: (user) => <Qualities qualities={user.qualities} />
     },
     profession: { path: "profession.name", name: "Профессия" },
     completedMeetings: { path: "completedMeetings", name: "Встретился, раз" },

@@ -17,9 +17,15 @@ const TextField = ({
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };
+  const handleChange = ({ target }) => {
+    onChange({ name: [target.name], value: target.value });
+  };
   return (
     <div className="mb-4">
-      <label htmlFor={name} style={{ display: label ? "inline-block" : "none" }}>
+      <label
+        htmlFor={name}
+        style={{ display: label ? "inline-block" : "none" }}
+      >
         {label}
       </label>
       <div className="input-group has-validation">
@@ -29,7 +35,7 @@ const TextField = ({
           name={name}
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           className={getInputClasses()}
         />
         {type === "password" && (

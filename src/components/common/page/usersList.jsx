@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import api from "../api";
-import SearchStatus from "./searchStatus";
-import Pagination from "./pagination";
-import { paginate } from "../utils/paginate";
-import GroupList from "./groupList";
-import UsersTable from "./usersTable";
+import api from "../../../api";
+import SearchStatus from "../../ui/searchStatus";
+import Pagination from "../pagination";
+import { paginate } from "../../../utils/paginate";
+import GroupList from "../groupList";
+import UsersTable from "../../ui/usersTable";
 import _ from "lodash";
-import TextField from "./textField";
+import TextField from "../form/textField";
 
-const Users = () => {
+const UsersList = () => {
   const [users, setUsers] = useState();
   const pageSize = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -141,4 +141,4 @@ const Users = () => {
   return "Загрузка...";
 };
 
-export default Users;
+export default UsersList;
